@@ -7,6 +7,7 @@ import { UserService } from './services/user.service';
 import { PrismaService } from '../core/prima.service';
 import { POSTGRESQLUserRepository } from './adapters/postgre-sql-user.repository';
 import { GetUsers } from './usecase/get-users';
+import { FindUserByEmailAddress } from './usecase/find-user-by-email-address';
 
 @Module({
   controllers: [UserController],
@@ -35,6 +36,13 @@ import { GetUsers } from './usecase/get-users';
       inject: [POSTGRESQLUserRepository],
       useFactory: (repository) => {
         return new GetUsers(repository)
+      }
+    },
+    {
+      provide: FindUserByEmailAddress,
+      inject: [POSTGRESQLUserRepository],
+      useFactory: (repository) => {
+        return new FindUserByEmailAddress(repository)
       }
     }
   ]
