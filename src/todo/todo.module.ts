@@ -7,6 +7,7 @@ import { POSTGRESQLUserRepository } from '../user/adapters/postgre-sql-user.repo
 import { UserService } from '../user/services/user.service';
 import { POSTGRESQLTodoRepository } from './adapters/postgre-sql-todo-repository';
 import { CreateTodo } from './usecases/create-todo';
+import { UpdateTodo } from './usecases/update-todo';
 
 @Module({
     controllers: [TodoController],
@@ -34,6 +35,13 @@ import { CreateTodo } from './usecases/create-todo';
             inject: [POSTGRESQLUserRepository, POSTGRESQLTodoRepository, RandomIdGenerate],
             useFactory: (userRepository, todoRepository, idGenerator) => {
                 return new CreateTodo(userRepository, todoRepository, idGenerator);
+            }
+        },
+        {
+            provide: UpdateTodo,
+            inject: [POSTGRESQLUserRepository, POSTGRESQLTodoRepository],
+            useFactory: (userRepository, todoRepository ) => {
+                return new UpdateTodo(userRepository, todoRepository);
             }
         }
     ]

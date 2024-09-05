@@ -15,7 +15,10 @@ export class InMemoryUserRepository implements IUserRepository {
     }
 
     async findById(id: string): Promise<PrismaClient | null> {
-        return this.database.find(user => user.props.id == id) ?? null;
+        const result = this.database.find(user => user.props.id == id) ?? null;
+        if(result=== null) return null;
+
+        return result.toPrisma()
 
     }
 

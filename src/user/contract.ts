@@ -1,5 +1,3 @@
-import { Status } from "@prisma/client";
-import { title } from "process";
 import { z } from "zod";
 
 export namespace UserApi {
@@ -28,5 +26,17 @@ export namespace TodoApi {
         export type Response = { 
             id: String 
         };
+    };
+
+    export namespace UpdateTodo {
+        export const schema = z.object({
+            userId: z.string(),
+            title: z.string(),
+            description: z.string(),
+            status: z.string() 
+        });
+
+        export type Request =  z.infer<typeof schema>;
+
     }
 }

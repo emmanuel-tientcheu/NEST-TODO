@@ -1,6 +1,9 @@
+import { Prisma } from "@prisma/client";
 import { Todo } from "../entities/todo";
 import { ITodoRepository } from "../ports/todo-repository-interface";
 import { TodoService } from "../services/todo.service";
+import { Todo as PrismaTodoCLient} from "@prisma/client";
+
 
 export class POSTGRESQLTodoRepository implements ITodoRepository {
 
@@ -9,12 +12,15 @@ export class POSTGRESQLTodoRepository implements ITodoRepository {
     async create(todo: Todo): Promise<void> {
         return await this.todoService.create(todo)
     }
-    update(id: string, newTodo: Partial<Omit<Todo, "id">>): Promise<Todo> {
-        throw new Error("Method not implemented.");
+
+    async update(id: string, newTodo: Todo): Promise<Prisma.TodoUpdateInput | null> {
+        return await this.todoService.update(id, newTodo);
     }
-    findById(id: string): Promise<Todo | null> {
-        throw new Error("Method not implemented.");
+
+    async findById(id: string):  Promise<PrismaTodoCLient | null> {
+        return await this.todoService.findById(id);
     }
+
     delete(id: string): Promise<void> {
         throw new Error("Method not implemented.");
     }

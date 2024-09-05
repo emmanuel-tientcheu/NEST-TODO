@@ -1,7 +1,10 @@
 import { error } from "console";
 import { Todo } from "../entities/todo";
+import { Prisma, Todo as PrismaTodoClient} from "@prisma/client";
 import { ITodoRepository } from "../ports/todo-repository-interface";
 import { promise } from "zod";
+import { Todo as PrismaTodoCLient} from "@prisma/client";
+
 
 export class InMemoryTodoRepository implements ITodoRepository{
 
@@ -11,7 +14,7 @@ export class InMemoryTodoRepository implements ITodoRepository{
         this.database.push(todo);
     }
 
-    async update(id: string, newTodo: Partial<Omit<Todo, 'id'>>): Promise<Todo> {
+    async update(id: string, newTodo: Todo): Promise<Prisma.TodoUpdateInput | null> {
         const index = this.database.findIndex(todo => todo.props.id == id);
         if(index == -1) throw error(`todo with id ${id} not found`);
 
@@ -23,11 +26,23 @@ export class InMemoryTodoRepository implements ITodoRepository{
         };
         this.database[index] = existingTodo;
         
-        return Promise.resolve(this.database[index])
+        return Promise.resolve(this.database[index].toPrisma())
     }
 
-    async findById(id: string): Promise<Todo | null> {
-        return this.database.find(todo => todo.props.id) ?? null
+    async findById(id: string): Promise<PrismaTodoCLient | null> {
+        const todo = this.database.find(todo => todo.props.id === id) ?? null;
+
+        if (!todo) {
+            return null;
+        }
+
+        return {
+            id: todo.props.id,
+            title: todo.props.title,
+            description: todo.props.description,
+            userId: todo.props.userId,
+            status: todo.mapStatus(todo.props.status), // Assurez-vous que mapStatus retourne le type correct
+        };
     }
 
     async delete(id: string): Promise<void> {
