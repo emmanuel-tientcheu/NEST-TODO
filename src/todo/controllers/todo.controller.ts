@@ -1,16 +1,18 @@
-import { Body, Controller, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
 import { CreateTodo } from "../usecases/create-todo";
 import { ZodevalidationPipe } from "src/core/pipes/zode-validation.pipe";
 import { TodoApi } from "src/user/contract";
 import { UpdateTodo } from "../usecases/update-todo";
 import { FindTodoById } from "../usecases/find-to-by-id";
+import { DeleteTodo } from "../usecases/delete-todo";
 
 @Controller("/todos")
 export class TodoController {
     constructor(
         private readonly createTodo: CreateTodo,
         private readonly updateTodo: UpdateTodo,
-        private readonly findTodoById: FindTodoById
+        private readonly findTodoById: FindTodoById,
+        private readonly deleteTodo: DeleteTodo
     ) {}
 
     @Post()
@@ -43,6 +45,11 @@ export class TodoController {
     @Get("/:id")
     async handleFindTodoById(@Param('id') id: string) {
         return await this.findTodoById.execute(id);
+    }
+
+    @Delete("/:id")
+    async handleDeleteTodo(@Param('id') id: string) {
+        return await this.deleteTodo.execute(id);
     }
 
 }

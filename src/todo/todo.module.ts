@@ -9,6 +9,7 @@ import { POSTGRESQLTodoRepository } from './adapters/postgre-sql-todo-repository
 import { CreateTodo } from './usecases/create-todo';
 import { UpdateTodo } from './usecases/update-todo';
 import { FindTodoById } from './usecases/find-to-by-id';
+import { DeleteTodo } from './usecases/delete-todo';
 
 @Module({
     controllers: [TodoController],
@@ -50,6 +51,13 @@ import { FindTodoById } from './usecases/find-to-by-id';
             inject: [POSTGRESQLTodoRepository],
             useFactory: (todoRepository) => {
                 return new FindTodoById(todoRepository);
+            }
+        },
+        {
+            provide: DeleteTodo,
+            inject: [POSTGRESQLTodoRepository],
+            useFactory: (todoRepository) => {
+                return new DeleteTodo(todoRepository);
             }
         }
     ]

@@ -21,8 +21,8 @@ export class POSTGRESQLTodoRepository implements ITodoRepository {
         return await this.todoService.findById(id);
     }
 
-    delete(id: string): Promise<void> {
-        throw new Error("Method not implemented.");
+    async delete(id: string): Promise<void> {
+        return await this.todoService.delete(id);
     }
     
 }

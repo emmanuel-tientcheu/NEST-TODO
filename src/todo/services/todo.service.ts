@@ -33,8 +33,11 @@ export class TodoService implements ITodoRepository {
             where: {id}
         })
     }
-    delete(id: string): Promise<void> {
-        throw new Error("Method not implemented.");
+
+    async delete(id: string): Promise<void> {
+        await this.prisma.todo.delete({
+            where: {id}
+        });
     }
     
 }
