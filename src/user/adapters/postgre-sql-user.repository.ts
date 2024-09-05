@@ -17,6 +17,10 @@ export class POSTGRESQLUserRepository implements IUserRepository{
        await this.userService.create(user); 
     }
 
+    async findById(id: string): Promise<PrismaUser | null> {
+        return await this.userService.findById(id);
+    }
+
     async findUserByEmailAddress(email: string): Promise<PrismaUser | null> {
         return await this.userService.findUserByEmailAddress(email)
     }

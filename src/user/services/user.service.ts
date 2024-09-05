@@ -9,9 +9,16 @@ import { User as PrismaCLient} from "@prisma/client"
 export class UserService implements IUserRepository {
     constructor(private prisma: PrismaService) {}
 
+
   async findAll(): Promise<PrismaCLient[]> {
     const users = await this.prisma.user.findMany(); 
     return users;  //?
+  }
+
+  async findById(id: string): Promise<PrismaCLient | null> {
+    return await this.prisma.user.findUnique({
+      where: {id}
+    })
   }
 
   async findUserByEmailAddress(email: string): Promise<PrismaCLient | null> {

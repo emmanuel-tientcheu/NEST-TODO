@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { CreateUser } from "../usecase/create-user";
 import { UserApi } from "../contract";
-import { ZodevalidationPipe } from "../pipes/zode-validation.pipe";
+import { ZodevalidationPipe } from "../../core/pipes/zode-validation.pipe";
 import { GetUsers } from "../usecase/get-users";
 import { User } from "../entities/user";
 import { User as PrismaUser} from "@prisma/client"

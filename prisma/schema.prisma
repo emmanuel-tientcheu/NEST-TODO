@@ -16,5 +16,21 @@ datasource db {
 model User {
   id       String     @id 
   email    String  @unique
-  password String 
+  password String
+  todos Todo[]
+}
+
+model Todo {
+  id       String     @id 
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String
+  title    String 
+  description       String
+  status      Status   @default(TODO)
+}
+
+enum Status {
+  TODO
+  DOING
+  DONE
 }
