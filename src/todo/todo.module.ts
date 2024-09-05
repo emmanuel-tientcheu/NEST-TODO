@@ -8,6 +8,7 @@ import { UserService } from '../user/services/user.service';
 import { POSTGRESQLTodoRepository } from './adapters/postgre-sql-todo-repository';
 import { CreateTodo } from './usecases/create-todo';
 import { UpdateTodo } from './usecases/update-todo';
+import { FindTodoById } from './usecases/find-to-by-id';
 
 @Module({
     controllers: [TodoController],
@@ -42,6 +43,13 @@ import { UpdateTodo } from './usecases/update-todo';
             inject: [POSTGRESQLUserRepository, POSTGRESQLTodoRepository],
             useFactory: (userRepository, todoRepository ) => {
                 return new UpdateTodo(userRepository, todoRepository);
+            }
+        },
+        {
+            provide: FindTodoById,
+            inject: [POSTGRESQLTodoRepository],
+            useFactory: (todoRepository) => {
+                return new FindTodoById(todoRepository);
             }
         }
     ]
