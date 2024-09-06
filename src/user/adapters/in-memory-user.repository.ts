@@ -18,12 +18,15 @@ export class InMemoryUserRepository implements IUserRepository {
         const result = this.database.find(user => user.props.id == id) ?? null;
         if(result=== null) return null;
 
-        return result.toPrisma()
+        return result.toPrisma();
 
     }
 
-    async findUserByEmailAddress(email: string): Promise<User | null> {
-        return this.database.find(user => user.props.email == email) ?? null;
+    async findUserByEmailAddress(email: string): Promise<PrismaClient | null> {
+        const result = this.database.find(user => user.props.email == email)?? null;
+        if(result=== null) return null;
+
+        return result.toPrisma();
             
     }
 }

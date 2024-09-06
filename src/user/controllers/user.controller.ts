@@ -8,7 +8,7 @@ import { User as PrismaUser} from "@prisma/client"
 import { FindUserByEmailAddress } from "../usecase/find-user-by-email-address";
 
 
-@Controller()
+@Controller("/users")
 export class UserController {
     constructor(
         private readonly createUser: CreateUser,
@@ -16,7 +16,7 @@ export class UserController {
         private readonly findUserByEmailAddress: FindUserByEmailAddress
     ) {}
 
-    @Post('/create-user')
+    @Post()
     handleCreateUser(
         @Body(new ZodevalidationPipe(UserApi.CreateUser.schema)) body: UserApi.CreateUser.Request
     ): Promise<UserApi.CreateUser.Response> {
@@ -27,12 +27,12 @@ export class UserController {
         })
     }
 
-   @Get('/get-users')
+   @Get()
    async handleGetUsers(): Promise<PrismaUser[]> {
         return await this.getUsers.execute()
     }
 
-   @Get('/user/:email')
+   @Get('/email/:email')
    async handleFindUserByEmailAddress(@Param('email') email: string) {
         return this.findUserByEmailAddress.execute({email})
    }

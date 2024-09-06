@@ -46,5 +46,13 @@ export class TodoService implements ITodoRepository {
             where: {id}
         });
     }
+
+    async findAllTodoByUser(userId: string): Promise<PrismaTodoCLient[] | null> {
+        return this.prisma.todo.findMany({
+            where: {
+              userId: userId,  // Filtre par l'utilisateur
+            },
+          });
+    }
     
 }

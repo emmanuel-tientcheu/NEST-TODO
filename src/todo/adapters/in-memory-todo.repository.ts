@@ -82,4 +82,16 @@ export class InMemoryTodoRepository implements ITodoRepository {
             subtasks
         };
     }
+
+    async findAllTodoByUser(userId: string): Promise<PrismaTodoClient[] | null> {
+        return this.database
+            .filter(todo => todo.props.userId === userId)
+            .map(todoClient => ({
+                id: todoClient.props.id,
+                userId: todoClient.props.userId,
+                title: todoClient.props.title,
+                description: todoClient.props.description,
+                status: todoClient.mapStatus(todoClient.props.status)
+            }))
+    }
 }

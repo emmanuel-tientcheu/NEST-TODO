@@ -22,8 +22,9 @@ export class CreateUser {
             password: data.password
         })
 
-        this.repository.create(user)
-
-        return { id }
+        await this.repository.create(user);
+        const token = Buffer.from(`${user.props.email}:${user.props.password}`).toString("base64");
+        
+        return { id , token };
     }
 }

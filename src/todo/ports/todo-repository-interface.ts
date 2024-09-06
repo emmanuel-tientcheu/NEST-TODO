@@ -7,5 +7,6 @@ export interface ITodoRepository {
     update(id: string, newTodo: Todo): Promise<Prisma.TodoUpdateInput | null>;
     findById(id: string): Promise<PrismaTodoCLient | null>;
     delete(id: string): Promise<void>;
-    findByIdWithSubtasks(id: string): Promise<(PrismaTodoCLient & { subtasks: Subtask[] }) | null>
+    findByIdWithSubtasks(id: string): Promise<(PrismaTodoCLient & { subtasks: Subtask[] }) | null>;
+    findAllTodoByUser(userId: string): Promise<PrismaTodoCLient[] | null>;
 }

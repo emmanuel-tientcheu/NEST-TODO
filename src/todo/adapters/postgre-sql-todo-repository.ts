@@ -29,5 +29,7 @@ export class POSTGRESQLTodoRepository implements ITodoRepository {
         return await this.todoService.delete(id);
     }
     
-    
+    async findAllTodoByUser(userId: string): Promise<PrismaTodoCLient[] | null> {
+        return await this.todoService.findAllTodoByUser(userId)
+    }
 }
