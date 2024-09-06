@@ -48,5 +48,12 @@ export namespace SubtaskApi {
             title: z.string(),
         });
         export type Request =  z.infer<typeof schema>;
+    };
+
+    export namespace UpdateSubtask {
+        export const schema = z.object({
+            title: z.string(),
+        });
+        export type Request =  z.infer<typeof schema>;
     }
 }

@@ -8,6 +8,7 @@ import { POSTGRESQLTodoRepository } from 'src/todo/adapters/postgre-sql-todo-rep
 import { TodoService } from '../todo/services/todo.service';
 import { FindSubtaskById } from './usecases/find-subtask-by-id';
 import { SubTaskController } from './controller/subtask.controller';
+import { UpdateSubtask } from './usecases/update-subtask';
 
 @Module({
     controllers: [SubTaskController],
@@ -42,6 +43,13 @@ import { SubTaskController } from './controller/subtask.controller';
           inject: [POSTGRESQLSubtaskRepository],
           useFactory: (subtaskRepository) => {
             return new FindSubtaskById(subtaskRepository);
+          }
+        },
+        {
+          provide: UpdateSubtask,
+          inject: [POSTGRESQLSubtaskRepository],
+          useFactory: (subtaskRepository) => {
+            return new UpdateSubtask(subtaskRepository);
           }
         }
     ],
