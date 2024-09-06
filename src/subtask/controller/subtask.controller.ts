@@ -1,16 +1,18 @@
-import { Body, Controller, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
 import { CreateSubtask } from "../usecases/create-subtask";
 import { FindSubtaskById } from "../usecases/find-subtask-by-id";
 import { ZodevalidationPipe } from "../../core/pipes/zode-validation.pipe";
 import { SubtaskApi } from "../../user/contract";
 import { UpdateSubtask } from "../usecases/update-subtask";
+import { DeleteSubtask } from "../usecases/delete-subtask";
 
 @Controller("/subtasks")
 export class SubTaskController {
     constructor(
         private readonly createSubtask: CreateSubtask,
         private readonly findSubtaskById: FindSubtaskById,
-        private readonly updateSubtask: UpdateSubtask
+        private readonly updateSubtask: UpdateSubtask,
+        private readonly deleteSubtask: DeleteSubtask
     ) {}
 
     @Post("/add")
@@ -39,5 +41,10 @@ export class SubTaskController {
         return await this.updateSubtask.execute(id, {
             title: body.title
         })
+    }
+
+    @Delete("/:id")
+    async handleDeleteSubtask(@Param('id') id: string) {
+        return await this.deleteSubtask.execute(id);
     }
 }
