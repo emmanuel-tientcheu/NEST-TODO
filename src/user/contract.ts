@@ -35,8 +35,18 @@ export namespace TodoApi {
             description: z.string(),
             status: z.string() 
         });
-
         export type Request =  z.infer<typeof schema>;
+    }
 
+
+}
+
+export namespace SubtaskApi {
+    export namespace CreateSubtask {
+        export const schema = z.object({
+            todoId: z.string(),
+            title: z.string(),
+        });
+        export type Request =  z.infer<typeof schema>;
     }
 }
