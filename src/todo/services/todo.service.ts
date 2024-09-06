@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { ITodoRepository } from "../ports/todo-repository-interface";
 import { Todo } from "../entities/todo";
 import { PrismaService } from "../../core/prima.service";
-import { Prisma } from "@prisma/client";
+import { Prisma, Subtask } from "@prisma/client";
 import { Todo as PrismaTodoCLient} from "@prisma/client"
 
 
@@ -32,6 +32,13 @@ export class TodoService implements ITodoRepository {
         return await this.prisma.todo.findUnique({
             where: {id}
         })
+    }
+
+    async findByIdWithSubtasks(id: string): Promise<(PrismaTodoCLient & { subtasks: Subtask[]; }) | null> {
+        return await this.prisma.todo.findUnique({
+            where: { id },
+            include: { subtasks: true },
+          });
     }
 
     async delete(id: string): Promise<void> {

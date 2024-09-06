@@ -10,6 +10,7 @@ import { CreateTodo } from './usecases/create-todo';
 import { UpdateTodo } from './usecases/update-todo';
 import { FindTodoById } from './usecases/find-to-by-id';
 import { DeleteTodo } from './usecases/delete-todo';
+import { FindTodoByIdWithSubtasks } from './usecases/find-todo-by-id-with-subtasks';
 
 @Module({
     controllers: [TodoController],
@@ -58,6 +59,13 @@ import { DeleteTodo } from './usecases/delete-todo';
             inject: [POSTGRESQLTodoRepository],
             useFactory: (todoRepository) => {
                 return new DeleteTodo(todoRepository);
+            }
+        },
+        {
+            provide: FindTodoByIdWithSubtasks,
+            inject: [POSTGRESQLTodoRepository],
+            useFactory: (todoRepository) => {
+                return new FindTodoByIdWithSubtasks(todoRepository);
             }
         }
     ]

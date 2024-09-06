@@ -5,6 +5,7 @@ import { TodoApi } from "src/user/contract";
 import { UpdateTodo } from "../usecases/update-todo";
 import { FindTodoById } from "../usecases/find-to-by-id";
 import { DeleteTodo } from "../usecases/delete-todo";
+import { FindTodoByIdWithSubtasks } from "../usecases/find-todo-by-id-with-subtasks";
 
 @Controller("/todos")
 export class TodoController {
@@ -12,7 +13,8 @@ export class TodoController {
         private readonly createTodo: CreateTodo,
         private readonly updateTodo: UpdateTodo,
         private readonly findTodoById: FindTodoById,
-        private readonly deleteTodo: DeleteTodo
+        private readonly deleteTodo: DeleteTodo,
+        private readonly findTodoByIdWithSubtasks: FindTodoByIdWithSubtasks
     ) {}
 
     @Post()
@@ -45,6 +47,11 @@ export class TodoController {
     @Get("/:id")
     async handleFindTodoById(@Param('id') id: string) {
         return await this.findTodoById.execute(id);
+    }
+
+    @Get("/:id/subtasks")
+    async handleFindTodoByIdWithSubtasks(@Param('id') id: string) {
+        return await this.findTodoByIdWithSubtasks.execute(id);
     }
 
     @Delete("/:id")

@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { Prisma, Subtask } from "@prisma/client";
 import { Todo } from "../entities/todo";
 import { ITodoRepository } from "../ports/todo-repository-interface";
 import { TodoService } from "../services/todo.service";
@@ -21,8 +21,13 @@ export class POSTGRESQLTodoRepository implements ITodoRepository {
         return await this.todoService.findById(id);
     }
 
+    async findByIdWithSubtasks(id: string): Promise<(PrismaTodoCLient & { subtasks: Subtask[]; }) | null> {
+       return await this.todoService.findByIdWithSubtasks(id);
+    }
+
     async delete(id: string): Promise<void> {
         return await this.todoService.delete(id);
     }
+    
     
 }

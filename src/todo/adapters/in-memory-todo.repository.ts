@@ -1,14 +1,16 @@
 import { error } from "console";
 import { Todo } from "../entities/todo";
-import { Prisma, Todo as PrismaTodoClient} from "@prisma/client";
+import { Prisma, Todo as PrismaTodoClient, Subtask} from "@prisma/client";
 import { ITodoRepository } from "../ports/todo-repository-interface";
-import { promise } from "zod";
 import { Todo as PrismaTodoCLient} from "@prisma/client";
+import { InMemorySubtaskRepository } from "../../subtask/adapters/in-memory-subtask.resposiotry";
+import { title } from "process";
 
 
-export class InMemoryTodoRepository implements ITodoRepository{
+export class InMemoryTodoRepository implements ITodoRepository {
 
     database: Todo[] = [];
+
 
     async create(todo: Todo): Promise<void> {
         this.database.push(todo);
@@ -52,5 +54,32 @@ export class InMemoryTodoRepository implements ITodoRepository{
         this.database.splice(index, 1);
     }
 
+    async findByIdWithSubtasks(id: string): Promise<(PrismaTodoCLient & { subtasks: Subtask[]; }) | null> {
+        const subtaskRepository = new InMemorySubtaskRepository();
+      
+        const todo = this.database.find(todo => todo.props.id === id) ?? null;
 
+        if (!todo) {
+            return null;
+        }
+
+        console.log(subtaskRepository.database);
+        
+        const subtasks = subtaskRepository.database
+            .filter(subtask => subtask.props.todoId === id)
+            .map(subtask => ({
+                id: subtask.props.id,
+                title: subtask.props.title,
+                todoId: id
+              }));
+
+        return {
+            id: todo.props.id,
+            title: todo.props.title,
+            description: todo.props.description,
+            userId: todo.props.userId,
+            status: todo.mapStatus(todo.props.status),
+            subtasks
+        };
+    }
 }
