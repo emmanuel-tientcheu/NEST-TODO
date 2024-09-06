@@ -41,7 +41,7 @@ export class InMemoryTodoRepository implements ITodoRepository{
             title: todo.props.title,
             description: todo.props.description,
             userId: todo.props.userId,
-            status: todo.mapStatus(todo.props.status), // Assurez-vous que mapStatus retourne le type correct
+            status: todo.mapStatus(todo.props.status),
         };
     }
 

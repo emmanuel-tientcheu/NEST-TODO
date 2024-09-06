@@ -27,10 +27,18 @@ model Todo {
   title    String 
   description       String
   status      Status   @default(TODO)
+  subtasks    Subtask[]
 }
 
 enum Status {
   TODO
   DOING
   DONE
+}
+
+model Subtask {
+  id       String  @id @default(uuid())
+  title    String
+  todo     Todo    @relation(fields: [todoId], references: [id])
+  todoId   String
 }
